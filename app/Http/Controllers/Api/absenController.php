@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\presents;
+use App\Models\absens;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class absenController extends Controller
+class absenController extends controller
 {
     /**
      * Display a listing of the resource.
@@ -15,15 +15,15 @@ class absenController extends Controller
      */
     public function index()
     {
-        $presents= presents::orderby('id', 'desc') -> paginate(3);
-  
+        $absens = absens::orderby('id') -> paginate(3);
+
         return response()->json([
             'success' => true,
-            'message' => 'Daftar Data Absen',
-            'data' => $presents
+            'message' => 'Daftar Tambah Mahasiswa',
+            'data' => $absens
         ], 200);
     }
-  
+
     /**
      * Store a newly created resource in storage.
      *
@@ -33,35 +33,36 @@ class absenController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'waktu_absen' => 'time|unique:presents',
-            'mahasiswa_id' => 'required|numeric',
-            'matakuliah_id' => 'required|numeric',
-            'keterangan' => 'required',
+        'waktu_absen' => 'required|unique:presents|max:255',
+        'mahasiswa_id' => 'required',
+        'matakuliah_id' => 'required',
+        'keterangan' => 'required',
+    
         ]);
-  
-        $presents = presents::create([
+
+        $absens = absens::create([
             'waktu_absen' => $request->waktu_absen,
             'mahasiswa_id' => $request->mahasiswa_id,
             'matakuliah_id' => $request->matakuliah_id,
             'keterangan' => $request->keterangan
         ]);
-  
-        if($presents)
+
+        if($absens)
         {
             return response()->json([
                 'success' => true,
-                'message' => 'Data Berhasil Ditambahkan',
-                'data' => $presents
+                'message' => 'Mahasiswa Berhasil Ditambahkan',
+                'data' => $absens
             ], 200);
         }else{
             return response()->json([
                 'success' => false,
-                'message' => 'Data Gagal Ditambahkan',
-                'data' => $presents
+                'message' => 'Mahasiswa Gagal Ditambahkan',
+                'data' => $absens
             ], 409);
         }
     }
-  
+
     /**
      * Display the specified resource.
      *
@@ -70,14 +71,14 @@ class absenController extends Controller
      */
     public function show($id)
     {
-        //
-        $present = presents::where('id', $id)->first();
+        $absen = absens::where('id', $id)->first();
 
         return response()->json([
             'success' => true,
-            'message' => 'Detail data absen',
-            'data' => $presents
+            'message' => 'Detail data Mahasiswa',
+            'data' => $absen
         ], 200);
+
     }
 
     /**
@@ -89,25 +90,28 @@ class absenController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $request->validate([
-            'waktu_absen' => 'time|unique:presents',
-            'matakuliah_id' => 'required|numeric',
-            'mahasiswa_id' => 'required',
-			'keterangan' => 'required',
-        ]);
-        $f = presents::find($id)->update([
+            $request->validate([
+                'waktu_absen' => 'required|unique:absens|max:255',
+                'mahasiswa_id' => 'required',
+                'matakuliah_id' => 'required',
+                'keterangan' => 'required',
+         
+                ]);
+        
+        $absen = absens::find($id)->update([
             'waktu_absen' => $request->waktu_absen,
-			 'matakuliah_id' => $request->matakuliah_id
             'mahasiswa_id' => $request->mahasiswa_id,
-            'keterangan' => $request->keterangan
+            'matakuliah_id' => $request->matakuliah_id,
+            'keterangan' => $request->keterangan,
+    
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Post Updated',
-            'data' => $p
+            'data' => $absen
         ], 200);
+
     }
 
     /**
@@ -118,8 +122,7 @@ class absenController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $cek = presents::find($id)->delete();
+    $cek = absens::find($id)->delete();
 
         return response()->json([
             'success' => true,
@@ -127,4 +130,6 @@ class absenController extends Controller
             'data' => $cek
         ], 200);
     }
-}  
+
+    
+}

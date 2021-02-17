@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\absenController;
-use App\Http\Controllers\Api\mahasiswaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +18,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('', [absenController::class, 'index']);
 Route::resources([
-    'students' => absenController::class,
-    'present' => mahasiswaController::class,
+    'absens' => absenController::class,
 ]);
