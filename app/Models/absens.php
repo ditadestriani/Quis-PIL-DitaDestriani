@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class presents extends Model
+class absens extends Model
 {
     use HasFactory;
     protected $guarded = ['mana'];
